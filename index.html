@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GutenachtMarie – Personalisierte Gutenachtgeschichten per WhatsApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Crimson Pro', Georgia, serif; background: #f5f0e8; color: #1a1035; font-size: 17px; }
+  .gnm-wrap { max-width: 680px; margin: 2rem auto; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 40px rgba(26,16,53,0.1); }
+  .gnm-hero { background: #1a1035; padding: 3rem 2rem 2.5rem; text-align: center; position: relative; overflow: hidden; }
+  .gnm-stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+  .gnm-star { position: absolute; background: #fff; border-radius: 50%; }
+  .gnm-badge { display: inline-block; background: rgba(250,199,117,0.15); border: 0.5px solid rgba(250,199,117,0.4); color: #FAC775; font-size: 12px; font-family: 'Crimson Pro', serif; letter-spacing: 0.06em; padding: 5px 14px; border-radius: 20px; margin-bottom: 1.5rem; }
+  .gnm-logo { font-family: 'Lora', serif; font-size: 28px; color: #fff; margin-bottom: 1.5rem; }
+  .gnm-logo span { color: #FAC775; }
+  .gnm-h1 { font-family: 'Lora', serif; font-size: 32px; font-weight: 600; color: #fff; line-height: 1.3; margin: 0 0 1rem; }
+  .gnm-h1 em { color: #FAC775; font-style: normal; }
+  .gnm-sub { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.65; max-width: 440px; margin: 0 auto 0.5rem; font-weight: 300; font-style: italic; }
+  .gnm-sub-voice { font-size: 14px; color: rgba(250,199,117,0.75); margin: 0 auto 2rem; font-family: 'Crimson Pro', serif; }
+  .gnm-cta-hero { background: #1a1035; color: #FAC775; font-family: 'Lora', serif; font-size: 16px; font-weight: 600; border: 1.5px solid #FAC775; padding: 15px 36px; border-radius: 50px; cursor: pointer; margin-bottom: 0.75rem; display: inline-block; letter-spacing: 0.02em; text-decoration: none; }
+  .gnm-cta-hero:hover { background: #FAC775; color: #1a1035; }
+  .gnm-hint { font-size: 13px; color: rgba(255,255,255,0.35); font-family: 'Crimson Pro', serif; font-style: italic; margin-top: 0.75rem; }
+  .gnm-section { padding: 2.5rem 2rem; }
+  .gnm-section-alt { padding: 2.5rem 2rem; background: #faf8f4; }
+  .gnm-label { font-size: 11px; letter-spacing: 0.1em; color: #888; text-transform: uppercase; margin-bottom: 0.5rem; font-family: 'Crimson Pro', serif; }
+  .gnm-h2 { font-family: 'Lora', serif; font-size: 24px; font-weight: 600; margin: 0 0 1.75rem; line-height: 1.3; }
+  .gnm-benefits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .gnm-benefit { background: #fff; border: 0.5px solid #e8e4dc; border-radius: 12px; padding: 1.25rem; }
+  .gnm-benefit-icon { width: 36px; height: 36px; border-radius: 10px; background: #FAEEDA; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; font-size: 18px; }
+  .gnm-benefit-title { font-family: 'Lora', serif; font-weight: 600; font-size: 15px; margin-bottom: 0.4rem; }
+  .gnm-benefit-text { font-size: 15px; color: #666; line-height: 1.5; font-weight: 300; }
+  .gnm-steps { display: flex; flex-direction: column; gap: 16px; }
+  .gnm-step { display: flex; align-items: flex-start; gap: 16px; }
+  .gnm-step-num { width: 32px; height: 32px; border-radius: 50%; background: #FAEEDA; color: #633806; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; font-family: 'Lora', serif; }
+  .gnm-step-title { font-family: 'Lora', serif; font-weight: 600; font-size: 16px; margin-bottom: 0.25rem; }
+  .gnm-step-text { font-size: 15px; color: #666; line-height: 1.5; font-weight: 300; font-style: italic; }
+  .gnm-wa-bubble { background: #1a1035; border-radius: 14px; padding: 1rem 1.25rem; margin-top: 16px; }
+  .gnm-wa-msg { display: flex; flex-direction: column; gap: 8px; }
+  .gnm-msg-out { background: #FAC775; color: #412402; border-radius: 14px 14px 0 14px; padding: 8px 12px; font-size: 14px; max-width: 80%; align-self: flex-end; font-family: 'Crimson Pro', serif; }
+  .gnm-audio { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 8px 12px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 8px; max-width: 80%; }
+  .gnm-play { width: 24px; height: 24px; border-radius: 50%; background: #FAC775; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .gnm-wave { flex: 1; height: 20px; display: flex; align-items: center; gap: 2px; }
+  .gnm-bar { width: 3px; border-radius: 2px; background: rgba(255,255,255,0.4); }
+  .gnm-msg-label { font-size: 12px; color: rgba(255,255,255,0.35); font-style: italic; font-family: 'Crimson Pro', serif; align-self: flex-start; }
+  .gnm-price { background: #fff; border: 0.5px solid #e8e4dc; border-radius: 12px; padding: 1.5rem; text-align: center; }
+  .gnm-price-amount { font-family: 'Lora', serif; font-size: 48px; font-weight: 600; color: #1a1035; }
+  .gnm-price-period { font-size: 15px; color: #888; font-family: 'Crimson Pro', serif; font-style: italic; }
+  .gnm-price-items { text-align: left; margin: 1rem 0; }
+  .gnm-price-item { font-size: 15px; color: #555; padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; font-family: 'Crimson Pro', serif; }
+  .gnm-check { width: 16px; height: 16px; border-radius: 50%; background: #EAF3DE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 3px; }
+  .gnm-privacy { background: #faf8f4; border: 0.5px solid #e8e4dc; border-radius: 8px; padding: 10px 14px; font-size: 14px; color: #888; line-height: 1.5; margin-top: 0.75rem; font-family: 'Crimson Pro', serif; font-style: italic; }
+  .gnm-form { background: #fff; border: 0.5px solid #e8e4dc; border-radius: 12px; padding: 1.5rem; }
+  .gnm-form-title { font-family: 'Lora', serif; font-size: 20px; font-weight: 600; margin-bottom: 0.25rem; }
+  .gnm-form-sub { font-size: 15px; color: #888; margin-bottom: 1.25rem; font-family: 'Crimson Pro', serif; font-style: italic; }
+  .gnm-input { width: 100%; background: #faf8f4; border: 0.5px solid #e8e4dc; border-radius: 8px; padding: 10px 14px; font-size: 15px; font-family: 'Crimson Pro', serif; color: #1a1035; margin-bottom: 10px; outline: none; }
+  .gnm-input:focus { border-color: #FAC775; }
+  .gnm-submit { width: 100%; background: #1a1035; color: #FAC775; border: 1.5px solid #FAC775; border-radius: 50px; padding: 14px; font-size: 16px; font-family: 'Lora', serif; font-weight: 600; cursor: pointer; margin-top: 4px; letter-spacing: 0.02em; }
+  .gnm-submit:hover { background: #FAC775; color: #1a1035; }
+  .gnm-form-note { font-size: 14px; color: #aaa; text-align: center; margin-top: 10px; font-family: 'Crimson Pro', serif; font-style: italic; }
+  .gnm-footer { text-align: center; padding: 1.5rem 2rem; background: #1a1035; }
+  .gnm-footer-logo { font-family: 'Lora', serif; color: #FAC775; font-size: 18px; margin-bottom: 0.5rem; }
+  .gnm-footer-text { font-size: 13px; color: rgba(255,255,255,0.35); font-family: 'Crimson Pro', serif; font-style: italic; }
+  @media (max-width: 500px) { .gnm-benefits { grid-template-columns: 1fr; } .gnm-h1 { font-size: 26px; } .gnm-wrap { margin: 0; border-radius: 0; } }
+</style>
+</head>
+<body>
+<div class="gnm-wrap">
+  <div class="gnm-hero">
+    <div class="gnm-stars" id="stars"></div>
+    <div class="gnm-badge">✦ Jetzt auf die Warteliste</div>
+    <div class="gnm-logo">Gutenacht<span>Marie</span></div>
+    <h1 class="gnm-h1">Dein Kind bekommt jede Nacht seine <em>ganz eigene</em> Geschichte.</h1>
+    <p class="gnm-sub">Personalisierte Gutenachtgeschichten als Sprachnachricht – direkt per WhatsApp.</p>
+    <p class="gnm-sub-voice">Optional in der Stimme von Mama, Papa oder Oma. ✦</p>
+    <a class="gnm-cta-hero" href="#gnm-form">Kostenlos auf Warteliste eintragen</a>
+    <p class="gnm-hint">Bereits 127 Familien auf der Warteliste · Kein Abo, keine Kreditkarte</p>
+  </div>
+  <div class="gnm-section">
+    <p class="gnm-label">Warum GutenachtMarie</p>
+    <h2 class="gnm-h2">Vorlesen, ohne selbst vorlesen zu müssen.</h2>
+    <div class="gnm-benefits">
+      <div class="gnm-benefit"><div class="gnm-benefit-icon">💬</div><div class="gnm-benefit-title">Nur kurz schreiben</div><div class="gnm-benefit-text">Name, Alter, was heute passiert ist – der Rest passiert von selbst.</div></div>
+      <div class="gnm-benefit"><div class="gnm-benefit-icon">🎙️</div><div class="gnm-benefit-title">Als Sprachnachricht</div><div class="gnm-benefit-text">Dein Kind hört die Geschichte – kein Scrollen, kein Vorlesen.</div></div>
+      <div class="gnm-benefit"><div class="gnm-benefit-icon">✨</div><div class="gnm-benefit-title">Jeden Abend neu</div><div class="gnm-benefit-text">Täglich eine frische Geschichte – immer passend zum Tag deines Kindes.</div></div>
+    </div>
+  </div>
+  <div class="gnm-section-alt">
+    <p class="gnm-label">So funktioniert's</p>
+    <h2 class="gnm-h2">In 3 Nachrichten zur Gutenachtgeschichte</h2>
+    <div class="gnm-steps">
+      <div class="gnm-step"><div class="gnm-step-num">1</div><div><div class="gnm-step-title">Du schreibst kurz auf WhatsApp</div><div class="gnm-step-text">„Mia, 6 Jahre, hat heute ihren ersten Zahn verloren und konnte es kaum glauben."</div></div></div>
+      <div class="gnm-step"><div class="gnm-step-num">2</div><div><div class="gnm-step-title">GutenachtMarie erstellt die Geschichte</div><div class="gnm-step-text">Personalisiert, altersgerecht – und kann sanft an frühere Abenteuer anknüpfen.</div></div></div>
+      <div class="gnm-step"><div class="gnm-step-num">3</div><div><div class="gnm-step-title">Du erhältst die Sprachnachricht</div><div class="gnm-step-text">In unter einer Minute – direkt in WhatsApp, bereit zum Abspielen.</div></div></div>
+    </div>
+    <div class="gnm-wa-bubble">
+      <div class="gnm-wa-msg">
+        <div class="gnm-msg-out">Mia, 6 J., hat heute ihren ersten Zahn verloren 🦷</div>
+        <div class="gnm-audio"><div class="gnm-play"><svg width="10" height="12" viewBox="0 0 10 12" fill="#412402"><path d="M0 0l10 6-10 6z"/></svg></div><div class="gnm-wave" id="wave"></div><span style="font-size:12px;">3:12</span></div>
+        <div class="gnm-msg-label">GutenachtMarie · gerade eben</div>
+      </div>
+    </div>
+  </div>
+  <div class="gnm-section">
+    <p class="gnm-label">Preis</p>
+    <h2 class="gnm-h2">Einfach und transparent.</h2>
+    <div class="gnm-price">
+      <div class="gnm-price-amount">7€</div>
+      <div class="gnm-price-period">pro Monat · jederzeit kündbar</div>
+      <div class="gnm-price-items">
+        <div class="gnm-price-item"><div class="gnm-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Eine neue Geschichte pro Nacht</div>
+        <div class="gnm-price-item"><div class="gnm-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Direkt per WhatsApp – kein App-Download nötig</div>
+        <div class="gnm-price-item"><div class="gnm-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Geschichten können aufeinander aufbauen</div>
+        <div class="gnm-price-item"><div class="gnm-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Optional: In der Stimme von Mama, Papa oder Oma</div>
+        <div class="gnm-price-item"><div class="gnm-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#3B6D11" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Daten sicher auf deutschen Servern</div>
+      </div>
+      <div class="gnm-privacy">🔒 Deine Daten gehören dir. GutenachtMarie speichert nur, was für die Geschichte nötig ist. Schreib jederzeit <strong>STOPP</strong> – und alle deine Daten werden sofort und vollständig gelöscht.</div>
+    </div>
+  </div>
+  <div class="gnm-section-alt" id="gnm-form">
+    <div class="gnm-form">
+      <div class="gnm-form-title">Jetzt einen Platz sichern</div>
+      <div class="gnm-form-sub">Trag dich ein – wir schreiben dir, sobald wir starten.</div>
+      <!-- SCHRITT 1: Ersetze DEINE_FORMSPREE_ID mit deiner ID von formspree.io -->
+      <form action="https://formspree.io/f/mpqoyyle" method="POST">
+        <input class="gnm-input" type="email" name="email" placeholder="E-Mail-Adresse" required />
+        <input class="gnm-input" type="tel" name="whatsapp" placeholder="WhatsApp-Nummer (optional)" />
+        <input type="hidden" name="_subject" value="Neue Wartelisten-Anmeldung – GutenachtMarie" />
+        <button type="submit" class="gnm-submit">Gratis auf Warteliste eintragen</button>
+      </form>
+      <p class="gnm-form-note">Kein Spam. Kein Abo. Nur eine E-Mail, wenn wir starten.</p>
+    </div>
+  </div>
+  <div class="gnm-footer">
+    <div class="gnm-footer-logo">GutenachtMarie</div>
+    <div class="gnm-footer-text">Datenschutz · Made in Germany · Daten auf deutschen Servern</div>
+  </div>
+</div>
+<script>
+  const s = document.getElementById('stars');
+  for(let i=0;i<40;i++){const el=document.createElement('div');el.className='gnm-star';const sz=Math.random()*2+1;el.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${Math.random()*0.6+0.1}`;s.appendChild(el);}
+  const w=document.getElementById('wave');[4,8,14,10,18,12,6,16,10,14,8,12,18,6,10,14,8,16,10,12].forEach(h=>{const b=document.createElement('div');b.className='gnm-bar';b.style.height=h+'px';w.appendChild(b);});
+</script>
+</body>
+</html>
